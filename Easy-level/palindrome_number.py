@@ -1,0 +1,43 @@
+"""
+Given an integer x, return true if x is a palindrome, and false otherwise.
+
+If a integer is negative ot must yield FALSE (-121 != 121-)
+"""
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        if x < 0 or (x % 10 == 0 and  x != 0):
+            return False
+        num_string = str(x)
+        for i in range (len(num_string)//2):
+            if num_string[i] != num_string[-(i+1)]:
+                return False
+        return True
+
+# Before convert the integer into a string and read it checks for cases that are 100%
+# NOT palindromes (negative numbers or multiples of 10)
+# Reads the starts and the end of the string moving towards the middle, and after reaching
+# the middle stops (ignoring the exact middle number if the lenght is inpair) instead of
+# repeating the same path the other side passed. If any check doesn't match returns false.
+
+
+# Alternative solution: Not usign strings
+
+class SolutionB:
+    def isPalindrome(self, x: int) -> bool:
+        if x < 0 or (x % 10 == 0 and  x != 0):
+            return False
+        inverted_half = 0
+        while x > inverted_half:
+            x, d = divmod(x, 10)
+            inverted_half = inverted_half * 10 + d
+        return x == inverted_half or x == inverted_half // 10
+
+# This does not saves time, but storage since a int is smaller than a str in size
+# This aproach "pops" the last digit of x using divmod (returns the '% 10' of x and divides it by 10)
+# and adds it to inverted_half, like having a strip with the number ans stripping the last digit
+# adding them to a new strip and matching them. In case the lenght is inpair the inverted_half
+# keeps the middle digit and when comparing its divided by floor 10 deleting that irrelevant-for-the-comparison digit
+
+solution = SolutionB()
+X = 2345432
+print(solution.isPalindrome(X))
